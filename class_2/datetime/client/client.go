@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net"
@@ -20,14 +19,13 @@ func main() {
 		}
 	}()
 
-	buf := make([]byte, 256)
-	for {
-		if _, err = conn.Read(buf); err == io.EOF {
-			break
+	go func() {
+		if _, err = io.Copy(os.Stdout, conn); err != nil {
+			log.Fatal(err)
 		}
+	}()
 
-		if _, err = io.WriteString(os.Stdout, fmt.Sprintf("Current time: %s", string(buf))); err != nil {
-			log.Printf("error while writing string: %v", err)
-		}
+	if _, err = io.Copy(conn, os.Stdin); err != nil {
+		log.Fatal(err)
 	}
 }
