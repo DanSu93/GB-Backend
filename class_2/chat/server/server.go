@@ -23,6 +23,7 @@ func main() {
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	go broadcaster(ctx)
 	for {
@@ -32,7 +33,7 @@ func main() {
 		}
 		go handleConn(ctx, conn)
 	}
-	cancel()
+
 }
 
 func broadcaster(ctx context.Context) {
@@ -60,8 +61,12 @@ func broadcaster(ctx context.Context) {
 func handleConn(ctx context.Context, conn net.Conn) {
 	ch := make(chan string)
 	go clientWriter(conn, ch)
-
-	who := conn.RemoteAddr().String()
+	nickname := make([]byte, 256)
+	if _, err := conn.Read(nickname); err != nil {
+		log.Printf("error while reading nickname: %v", err)
+		return
+	}
+	who := string(nickname)
 	ch <- "You are " + who
 	messages <- who + " has arrived"
 	entering <- ch

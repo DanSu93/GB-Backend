@@ -14,9 +14,17 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var nickname string
+	fmt.Print("Please enter your nickname: ")
+	if _, err = fmt.Scan(&nickname); err != nil {
+		log.Fatal(err)
+	}
+	if _, err = fmt.Fprintf(conn, nickname); err != nil {
+		log.Fatal(err)
+	}
+
 	defer func() {
-		err := conn.Close()
-		if err != nil {
+		if err = conn.Close(); err != nil {
 			log.Printf("error while closing connection:%v", err)
 		}
 	}()
