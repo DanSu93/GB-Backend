@@ -85,7 +85,7 @@ paths:
               schema:
                 type: string
         400:
-          description: Invalid username/password supplied
+          description: Invalid username or password
           content: { }
 
   /user/logout:
@@ -104,14 +104,14 @@ paths:
       parameters:
         - name: price_min
           in: query
-          description: Lower price limit
+          description: Lower price
           required: false
           schema:
             type: integer
             format: int64
         - name: price_max
           in: query
-          description: Upper price limit
+          description: Upper price
           required: false
           schema:
             type: integer
