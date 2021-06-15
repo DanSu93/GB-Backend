@@ -275,7 +275,7 @@ paths:
       parameters:
         - name: orderId
           in: path
-          description: ID of an order to return
+          description: order ID to return
           required: true
           schema:
             type: integer
@@ -291,12 +291,12 @@ paths:
           description: Invalid ID supplied
           content: { }
     put:
-      summary: Updates an order in the store with form data
+      summary: Updates an order
       operationId: UpdateOrder
       parameters:
         - name: orderId
           in: path
-          description: ID of item that needs to be updated
+          description: item ID to be updated
           required: true
           schema:
             type: integer
@@ -332,7 +332,7 @@ paths:
             format: int64
       responses:
         400:
-          description: Invalid ID supplied
+          description: Invalid ID
           content: { }
         404:
           description: Item not found
